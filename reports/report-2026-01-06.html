@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Analysis - 2026-01-06 | StockTradebyZ</title>
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo h1 {
+            color: #2c3e50;
+            font-size: 1.8em;
+            font-weight: 700;
+        }
+        
+        .date-info {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+        }
+        
+        .stats-bar {
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+        
+        .strategies-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .strategy-card {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .strategy-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .strategy-header {
+            padding: 25px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .strategy-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
+        }
+        
+        .strategy-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .strategy-info h3 {
+            font-size: 1.4em;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+        
+        .strategy-meta {
+            display: flex;
+            justify-content: space-between;
+            opacity: 0.9;
+            font-size: 0.85em;
+        }
+        
+        .strategy-content {
+            padding: 25px;
+        }
+        
+        .stocks-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .stocks-container h4 {
+            color: #2c3e50;
+            font-size: 1.1em;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .stocks-container h4::before {
+            content: "📈";
+            font-size: 1.2em;
+        }
+        
+        .industry-summary {
+            font-size: 0.85em;
+            color: #7f8c8d;
+            background: rgba(255,255,255,0.7);
+            padding: 5px 10px;
+            border-radius: 12px;
+            max-width: 200px;
+        }
+        
+        .stocks-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 12px;
+            margin-top: 15px;
+        }
+        
+        .stock-item {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(52,152,219,0.2);
+            border-radius: 12px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .stock-item:hover {
+            transform: translateX(5px);
+            border-color: #3498db;
+            box-shadow: 0 3px 15px rgba(52,152,219,0.2);
+            background: rgba(52,152,219,0.05);
+        }
+        
+        .stock-main {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        
+        .stock-code {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 0.85em;
+            min-width: 60px;
+            text-align: center;
+        }
+        
+        .stock-name {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 0.95em;
+        }
+        
+        .stock-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+        
+        .stock-industry {
+            font-size: 0.8em;
+            color: #7f8c8d;
+            background: #ecf0f1;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+        
+        .stock-price {
+            font-size: 0.85em;
+            color: #27ae60;
+            font-weight: 600;
+            padding: 8px 12px;
+            background-color: rgba(39, 174, 96, 0.1);
+            border-radius: 8px;
+            border-left: 4px solid #27ae60;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(39, 174, 96, 0.1);
+        }
+        
+        .stock-market {
+            font-size: 0.75em;
+            color: #95a5a6;
+        }
+        
+        .no-stocks {
+            color: #95a5a6;
+            font-style: italic;
+            text-align: center;
+            padding: 30px 20px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 10px;
+            border: 2px dashed #bdc3c7;
+        }
+        
+        .no-data {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 1.2em;
+            margin: 50px 0;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            max-width: 600px;
+            margin: 50px auto;
+        }
+        
+        .footer {
+            margin-top: 60px;
+            text-align: center;
+            padding: 30px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9em;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .strategies-grid {
+                grid-template-columns: 1fr;
+                padding: 0 15px;
+            }
+            
+            .stats-bar {
+                padding: 0 15px;
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+            
+            .stocks-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            
+            .industry-summary {
+                max-width: 100%;
+                font-size: 0.8em;
+            }
+            
+            .stocks-list {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 10px;
+            }
+            
+            .stock-item {
+                min-height: 100px;
+                padding: 12px;
+            }
+            
+            .stock-main {
+                margin-bottom: 6px;
+            }
+            
+            .stock-meta {
+                margin-bottom: 6px;
+            }
+            
+            .stock-price {
+                font-size: 0.8em;
+                padding: 6px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div style="font-size: 2em;">📊</div>
+                <h1>StockTradebyZ</h1>
+            </div>
+            <div class="date-info">
+                📅 2026-01-06
+            </div>
+        </div>
+    </div>
+    
+    <div class="stats-bar">
+        <div class="stat-card">
+            <div class="stat-number">5</div>
+            <div class="stat-label">总策略数</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">3</div>
+            <div class="stat-label">有效策略</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">69</div>
+            <div class="stat-label">选中股票</div>
+        </div>
+    </div>
+    
+    <div class="strategies-grid">
+        
+    <div class="strategy-card" style="animation-delay: 0.0s;">
+        <div class="strategy-header" style="background: #3498db;">
+            <div class="strategy-icon">🚀</div>
+            <div class="strategy-info">
+                <h3>SuperB1战法</h3>
+                <div class="strategy-meta">
+                    <span class="date">📅 2025-10-31</span>
+                    <span class="count">📊 0 支股票</span>
+                </div>
+            </div>
+        </div>
+        <div class="strategy-content">
+            <div class="stocks-container">
+                <div class="stocks-header">
+                    <h4>选中股票</h4>
+                    <div class="industry-summary">行业分布: 暂无</div>
+                </div>
+                <div class="stocks-list">
+                    <div class="no-stocks">暂无选中股票</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="strategy-card" style="animation-delay: 0.1s;">
+        <div class="strategy-header" style="background: #f39c12;">
+            <div class="strategy-icon">🎫</div>
+            <div class="strategy-info">
+                <h3>补票战法</h3>
+                <div class="strategy-meta">
+                    <span class="date">📅 2025-10-31</span>
+                    <span class="count">📊 5 支股票</span>
+                </div>
+            </div>
+        </div>
+        <div class="strategy-content">
+            <div class="stocks-container">
+                <div class="stocks-header">
+                    <h4>选中股票</h4>
+                    <div class="industry-summary">行业分布: C27医药制造业(1)、C39计算机、通信和其他电子设备制造业(1)、C20木材加工和木、竹、藤、棕、草制品业(1) 等5个行业</div>
+                </div>
+                <div class="stocks-list">
+                    
+        <div class="stock-item" data-stock="002817" onclick="searchStock('002817')">
+            <div class="stock-main">
+                <span class="stock-code">002817</span>
+                <span class="stock-name">黄山胶囊</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">C27医药制造业</span>
+                <span class="stock-market">深圳</span>
+            </div>
+            <div class="stock-price">💰 7.65 | 📊 61.2亿 | PE 41.5</div>
+        </div>
+        
+        <div class="stock-item" data-stock="001229" onclick="searchStock('001229')">
+            <div class="stock-main">
+                <span class="stock-code">001229</span>
+                <span class="stock-name">魅视科技</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">C39计算机、通信和其他电子设备制造业</span>
+                <span class="stock-market">深圳</span>
+            </div>
+            <div class="stock-price">💰 35.31 | 📊 282.5亿 | PE 51.2</div>
+        </div>
+        
+        <div class="stock-item" data-stock="603022" onclick="searchStock('603022')">
+            <div class="stock-main">
+                <span class="stock-code">603022</span>
+                <span class="stock-name">新通联</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">C20木材加工和木、竹、藤、棕、草制品业</span>
+                <span class="stock-market">上海</span>
+            </div>
+            <div class="stock-price">💰 10.65 | 📊 159.8亿 | PE 42.0</div>
+        </div>
+        
+        <div class="stock-item" data-stock="002066" onclick="searchStock('002066')">
+            <div class="stock-main">
+                <span class="stock-code">002066</span>
+                <span class="stock-name">瑞泰科技</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">C30非金属矿物制品业</span>
+                <span class="stock-market">深圳</span>
+            </div>
+            <div class="stock-price">💰 13.37 | 📊 107.0亿 | PE 74.5</div>
+        </div>
+        
+        <div class="stock-item" data-stock="600883" onclick="searchStock('600883')">
+            <div class="stock-main">
+                <span class="stock-code">600883</span>
+                <span class="stock-name">博闻科技</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">C13农副食品加工业</span>
+                <span class="stock-market">上海</span>
+            </div>
+            <div class="stock-price">💰 7.90 | 📊 118.5亿 | PE 34.6</div>
+        </div>
+        
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="strategy-card" style="animation-delay: 0.2s;">
+        <div class="strategy-header" style="background: #27ae60;">
+            <div class="strategy-icon">🕳️</div>
+            <div class="strategy-info">
+                <h3>填坑战法</h3>
+                <div class="strategy-meta">
+                    <span class="date">📅 2025-10-31</span>
+                    <span class="count">📊 0 支股票</span>
+                </div>
+            </div>
+        </div>
+        <div class="strategy-content">
+            <div class="stocks-container">
+                <div class="stocks-header">
+                    <h4>选中股票</h4>
+                    <div class="industry-summary">行业分布: 暂无</div>
+                </div>
+                <div class="stocks-list">
+                    <div class="no-stocks">暂无选中股票</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="strategy-card" style="animation-delay: 0.30000000000000004s;">
+        <div class="strategy-header" style="background: #e74c3c;">
+            <div class="strategy-icon">👩‍💼</div>
+            <div class="strategy-info">
+                <h3>少妇战法</h3>
+                <div class="strategy-meta">
+                    <span class="date">📅 2025-10-31</span>
+                    <span class="count">📊 25 支股票</span>
+                </div>
+            </div>
+        </div>
+        <div class="strategy-content">
+            <div class="stocks-container">
+                <div class="stocks-header">
+                    <h4>选中股票</h4>
+                    <div class="industry-summary">行业分布: J69其他金融业(1)、C14食品制造业(2)、D46水的生产和供应业(3) 等14个行业</div>
+                </div>
+                <div class="stocks-list">
+                    
+        <div class="stock-item" data-stock="000987" onclick="searchStock('000987')">
+            <div class="stock-main">
+                <span class="stock-code">000987</span>
+                <span class="stock-name">越秀资本</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">J69其他金融业</span>
+                <span class="stock-market">深圳</span>
+            </div>
+            <div class="stock-price">💰 8.03 | 📊 64.2亿 | PE 16.2</div>
+        </div>
+        
+        <div class="stock-item" data-stock="600784" onclick="searchStock('600784')">
+            <div class="stock-main">
+                <span class="stock-code">600784</span>
+                <span class="stock-name">鲁银投资</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">C14食品制造业</span>
+                <span class="stock-market">上海</span>
+            </div>
+            <div class="stock-price">💰 6.39 | 📊 95.8亿 | PE 17.1</div>
+        </div>
+        
+        <div class="stock-item" data-stock="600769" onclick="searchStock('600769')">
+            <div class="stock-main">
+                <span class="stock-code">600769</span>
+                <span class="stock-name">祥龙电业</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">D46水的生产和供应业</span>
+                <span class="stock-market">上海</span>
+            </div>
+            <div class="stock-price">💰 11.20 | 📊 168.0亿 | PE 217.4</div>
+        </div>
+        
+        <div class="stock-item" data-stock="600188" onclick="searchStock('600188')">
+            <div class="stock-main">
+                <span class="stock-code">600188</span>
+                <span class="stock-name">兖矿能源</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">B06煤炭开采和洗选业</span>
+                <span class="stock-market">上海</span>
+            </div>
+            <div class="stock-price">💰 12.99 | 📊 194.8亿 | PE 9.7</div>
+        </div>
+        
+        <div class="stock-item" data-stock="603861" onclick="searchStock('603861')">
+            <div class="stock-main">
+                <span class="stock-code">603861</span>
+                <span class="stock-name">白云电器</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">C38电气机械和器材制造业</span>
+                <span class="stock-market">上海</span>
+            </div>
+            <div class="stock-price">💰 10.37 | 📊 155.5亿 | PE 25.5</div>
+        </div>
+        
+        <div class="stock-item" data-stock="000571" onclick="searchStock('000571')">
+            <div class="stock-main">
+                <span class="stock-code">000571</span>
+                <span class="stock-name">新大洲A</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">B06煤炭开采和洗选业</span>
+                <span class="stock-market">深圳</span>
+            </div>
+            <div class="stock-price">💰 4.64 | 📊 37.1亿</div>
+        </div>
+        
+        <div class="stock-item" data-stock="600226" onclick="searchStock('600226')">
+            <div class="stock-main">
+                <span class="stock-code">600226</span>
+                <span class="stock-name">亨通股份</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">D44电力、热力生产和供应业</span>
+                <span class="stock-market">上海</span>
+            </div>
+            <div class="stock-price">💰 3.35 | 📊 50.2亿 | PE 49.9</div>
+        </div>
+        
+        <div class="stock-item" data-stock="002963" onclick="searchStock('002963')">
+            <div class="stock-main">
+                <span class="stock-code">002963</span>
+                <span class="stock-name">豪尔赛</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">E50建筑装饰、装修和其他建筑业</span>
+                <span class="stock-market">深圳</span>
+            </div>
+            <div class="stock-price">💰 12.92 | 📊 103.4亿</div>
+        </div>
+        
+        <div class="stock-item" data-stock="601018" onclick="searchStock('601018')">
+            <div class="stock-main">
+                <span class="stock-code">601018</span>
+                <span class="stock-name">宁波港</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">G55水上运输业</span>
+                <span class="stock-market">上海</span>
+            </div>
+            <div class="stock-price">💰 3.63 | 📊 54.5亿 | PE 14.3</div>
+        </div>
+        
+        <div class="stock-item" data-stock="600783" onclick="searchStock('600783')">
+            <div class="stock-main">
+                <span class="stock-code">600783</span>
+                <span class="stock-name">鲁信创投</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">J67资本市场服务</span>
+                <span class="stock-market">上海</span>
+            </div>
+            <div class="stock-price">💰 13.06 | 📊 195.9亿 | PE 35.3</div>
+        </div>
+        
+        <div class="stock-item" data-stock="603606" onclick="searchStock('603606')">
+            <div class="stock-main">
+                <span class="stock-code">603606</span>
+                <span class="stock-name">东方电缆</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">C38电气机械和器材制造业</span>
+                <span class="stock-market">上海</span>
+            </div>
+            <div class="stock-price">💰 53.35 | 📊 800.2亿 | PE 43.8</div>
+        </div>
+        
+        <div class="stock-item" data-stock="002135" onclick="searchStock('002135')">
+            <div class="stock-main">
+                <span class="stock-code">002135</span>
+                <span class="stock-name">东南网架</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">C33金属制品业</span>
+                <span class="stock-market">深圳</span>
+            </div>
+            <div class="stock-price">💰 4.41 | 📊 35.3亿 | PE 33.2</div>
+        </div>
+        
+        <div class="stock-item" data-stock="002271" onclick="searchStock('002271')">
+            <div class="stock-main">
+                <span class="stock-code">002271</span>
+                <span class="stock-name">东方雨虹</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">C30非金属矿物制品业</span>
+                <span class="stock-market">深圳</span>
+            </div>
+            <div class="stock-price">💰 11.60 | 📊 92.8亿</div>
+        </div>
+        
+        <div class="stock-item" data-stock="001210" onclick="searchStock('001210')">
+            <div class="stock-main">
+                <span class="stock-code">001210</span>
+                <span class="stock-name">金房能源</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">D44电力、热力生产和供应业</span>
+                <span class="stock-market">深圳</span>
+            </div>
+            <div class="stock-price">💰 15.37 | 📊 123.0亿 | PE 30.0</div>
+        </div>
+        
+        <div class="stock-item" data-stock="600323" onclick="searchStock('600323')">
+            <div class="stock-main">
+                <span class="stock-code">600323</span>
+                <span class="stock-name">瀚蓝环境</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">N77生态保护和环境治理业</span>
+                <span class="stock-market">上海</span>
+            </div>
+            <div class="stock-price">💰 26.04 | 📊 390.6亿 | PE 12.2</div>
+        </div>
+        
+        <div class="stock-item" data-stock="600874" onclick="searchStock('600874')">
+            <div class="stock-main">
+                <span class="stock-code">600874</span>
+                <span class="stock-name">创业环保</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">D46水的生产和供应业</span>
+                <span class="stock-market">上海</span>
+            </div>
+            <div class="stock-price">💰 5.97 | 📊 89.5亿 | PE 10.9</div>
+        </div>
+        
+        <div class="stock-item" data-stock="002608" onclick="searchStock('002608')">
+            <div class="stock-main">
+                <span class="stock-code">002608</span>
+                <span class="stock-name">江苏国信</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">D44电力、热力生产和供应业</span>
+                <span class="stock-market">深圳</span>
+            </div>
+            <div class="stock-price">💰 7.65 | 📊 61.2亿 | PE 8.7</div>
+        </div>
+        
+        <div class="stock-item" data-stock="603568" onclick="searchStock('603568')">
+            <div class="stock-main">
+                <span class="stock-code">603568</span>
+                <span class="stock-name">伟明环保</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">N77生态保护和环境治理业</span>
+                <span class="stock-market">上海</span>
+            </div>
+            <div class="stock-price">💰 19.17 | 📊 287.6亿 | PE 12.1</div>
+        </div>
+        
+        <div class="stock-item" data-stock="603162" onclick="searchStock('603162')">
+            <div class="stock-main">
+                <span class="stock-code">603162</span>
+                <span class="stock-name">海通发展</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">G55水上运输业</span>
+                <span class="stock-market">上海</span>
+            </div>
+            <div class="stock-price">💰 8.80 | 📊 132.0亿 | PE 20.7</div>
+        </div>
+        
+        <div class="stock-item" data-stock="600641" onclick="searchStock('600641')">
+            <div class="stock-main">
+                <span class="stock-code">600641</span>
+                <span class="stock-name">万业企业</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">K70房地产业</span>
+                <span class="stock-market">上海</span>
+            </div>
+            <div class="stock-price">💰 15.92 | 📊 238.8亿 | PE 142.9</div>
+        </div>
+        
+        <div class="stock-item" data-stock="601686" onclick="searchStock('601686')">
+            <div class="stock-main">
+                <span class="stock-code">601686</span>
+                <span class="stock-name">友发集团</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">C33金属制品业</span>
+                <span class="stock-market">上海</span>
+            </div>
+            <div class="stock-price">💰 6.02 | 📊 90.3亿 | PE 14.4</div>
+        </div>
+        
+        <div class="stock-item" data-stock="600971" onclick="searchStock('600971')">
+            <div class="stock-main">
+                <span class="stock-code">600971</span>
+                <span class="stock-name">恒源煤电</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">B06煤炭开采和洗选业</span>
+                <span class="stock-market">上海</span>
+            </div>
+            <div class="stock-price">💰 6.79 | 📊 101.8亿 | PE 44.2</div>
+        </div>
+        
+        <div class="stock-item" data-stock="600423" onclick="searchStock('600423')">
+            <div class="stock-main">
+                <span class="stock-code">600423</span>
+                <span class="stock-name">柳化股份</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">C26化学原料和化学制品制造业</span>
+                <span class="stock-market">上海</span>
+            </div>
+            <div class="stock-price">💰 3.56 | 📊 53.4亿 | PE 158.3</div>
+        </div>
+        
+        <div class="stock-item" data-stock="603817" onclick="searchStock('603817')">
+            <div class="stock-main">
+                <span class="stock-code">603817</span>
+                <span class="stock-name">海峡环保</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">D46水的生产和供应业</span>
+                <span class="stock-market">上海</span>
+            </div>
+            <div class="stock-price">💰 6.00 | 📊 90.0亿 | PE 17.4</div>
+        </div>
+        
+        <div class="stock-item" data-stock="002650" onclick="searchStock('002650')">
+            <div class="stock-main">
+                <span class="stock-code">002650</span>
+                <span class="stock-name">ST加加</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">C14食品制造业</span>
+                <span class="stock-market">深圳</span>
+            </div>
+            <div class="stock-price">💰 6.96 | 📊 55.7亿</div>
+        </div>
+        
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="strategy-card" style="animation-delay: 0.4s;">
+        <div class="strategy-header" style="background: #9b59b6;">
+            <div class="strategy-icon">⚡</div>
+            <div class="strategy-info">
+                <h3>上穿60放量战法</h3>
+                <div class="strategy-meta">
+                    <span class="date">📅 2025-10-31</span>
+                    <span class="count">📊 39 支股票</span>
+                </div>
+            </div>
+        </div>
+        <div class="strategy-content">
+            <div class="stocks-container">
+                <div class="stocks-header">
+                    <h4>选中股票</h4>
+                    <div class="industry-summary">行业分布: D46水的生产和供应业(3)、F51批发业(1)、J69其他金融业(1) 等27个行业</div>
+                </div>
+                <div class="stocks-list">
+                    
+        <div class="stock-item" data-stock="600168" onclick="searchStock('600168')">
+            <div class="stock-main">
+                <span class="stock-code">600168</span>
+                <span class="stock-name">武汉控股</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">D46水的生产和供应业</span>
+                <span class="stock-market">上海</span>
+            </div>
+            <div class="stock-price">💰 4.95 | 📊 74.2亿 | PE 70.1</div>
+        </div>
+        
+        <div class="stock-item" data-stock="000626" onclick="searchStock('000626')">
+            <div class="stock-main">
+                <span class="stock-code">000626</span>
+                <span class="stock-name">远大控股</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">F51批发业</span>
+                <span class="stock-market">深圳</span>
+            </div>
+            <div class="stock-price">💰 6.98 | 📊 55.8亿</div>
+        </div>
+        
+        <div class="stock-item" data-stock="000987" onclick="searchStock('000987')">
+            <div class="stock-main">
+                <span class="stock-code">000987</span>
+                <span class="stock-name">越秀资本</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">J69其他金融业</span>
+                <span class="stock-market">深圳</span>
+            </div>
+            <div class="stock-price">💰 8.03 | 📊 64.2亿 | PE 16.2</div>
+        </div>
+        
+        <div class="stock-item" data-stock="001282" onclick="searchStock('001282')">
+            <div class="stock-main">
+                <span class="stock-code">001282</span>
+                <span class="stock-name">三联锻造</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">C36汽车制造业</span>
+                <span class="stock-market">深圳</span>
+            </div>
+            <div class="stock-price">💰 20.58 | 📊 164.6亿 | PE 30.7</div>
+        </div>
+        
+        <div class="stock-item" data-stock="600769" onclick="searchStock('600769')">
+            <div class="stock-main">
+                <span class="stock-code">600769</span>
+                <span class="stock-name">祥龙电业</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">D46水的生产和供应业</span>
+                <span class="stock-market">上海</span>
+            </div>
+            <div class="stock-price">💰 11.20 | 📊 168.0亿 | PE 217.4</div>
+        </div>
+        
+        <div class="stock-item" data-stock="601992" onclick="searchStock('601992')">
+            <div class="stock-main">
+                <span class="stock-code">601992</span>
+                <span class="stock-name">金隅集团</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">C30非金属矿物制品业</span>
+                <span class="stock-market">上海</span>
+            </div>
+            <div class="stock-price">💰 1.65 | 📊 24.8亿</div>
+        </div>
+        
+        <div class="stock-item" data-stock="002490" onclick="searchStock('002490')">
+            <div class="stock-main">
+                <span class="stock-code">002490</span>
+                <span class="stock-name">山东墨龙</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">C35专用设备制造业</span>
+                <span class="stock-market">深圳</span>
+            </div>
+            <div class="stock-price">💰 5.85 | 📊 46.8亿</div>
+        </div>
+        
+        <div class="stock-item" data-stock="002825" onclick="searchStock('002825')">
+            <div class="stock-main">
+                <span class="stock-code">002825</span>
+                <span class="stock-name">纳尔股份</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">C29橡胶和塑料制品业</span>
+                <span class="stock-market">深圳</span>
+            </div>
+            <div class="stock-price">💰 10.25 | 📊 82.0亿 | PE 19.8</div>
+        </div>
+        
+        <div class="stock-item" data-stock="002337" onclick="searchStock('002337')">
+            <div class="stock-main">
+                <span class="stock-code">002337</span>
+                <span class="stock-name">赛象科技</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">C35专用设备制造业</span>
+                <span class="stock-market">深圳</span>
+            </div>
+            <div class="stock-price">💰 5.70 | 📊 45.6亿 | PE 70.7</div>
+        </div>
+        
+        <div class="stock-item" data-stock="000518" onclick="searchStock('000518')">
+            <div class="stock-main">
+                <span class="stock-code">000518</span>
+                <span class="stock-name">*ST四环</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">C27医药制造业</span>
+                <span class="stock-market">深圳</span>
+            </div>
+            <div class="stock-price">💰 2.36 | 📊 18.9亿</div>
+        </div>
+        
+        <div class="stock-item" data-stock="002963" onclick="searchStock('002963')">
+            <div class="stock-main">
+                <span class="stock-code">002963</span>
+                <span class="stock-name">豪尔赛</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">E50建筑装饰、装修和其他建筑业</span>
+                <span class="stock-market">深圳</span>
+            </div>
+            <div class="stock-price">💰 12.92 | 📊 103.4亿</div>
+        </div>
+        
+        <div class="stock-item" data-stock="002893" onclick="searchStock('002893')">
+            <div class="stock-main">
+                <span class="stock-code">002893</span>
+                <span class="stock-name">京能热力</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">D44电力、热力生产和供应业</span>
+                <span class="stock-market">深圳</span>
+            </div>
+            <div class="stock-price">💰 11.38 | 📊 91.0亿 | PE 39.4</div>
+        </div>
+        
+        <div class="stock-item" data-stock="002942" onclick="searchStock('002942')">
+            <div class="stock-main">
+                <span class="stock-code">002942</span>
+                <span class="stock-name">新农股份</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">C26化学原料和化学制品制造业</span>
+                <span class="stock-market">深圳</span>
+            </div>
+            <div class="stock-price">💰 18.82 | 📊 150.6亿 | PE 36.6</div>
+        </div>
+        
+        <div class="stock-item" data-stock="002513" onclick="searchStock('002513')">
+            <div class="stock-main">
+                <span class="stock-code">002513</span>
+                <span class="stock-name">蓝丰生化</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">C38电气机械和器材制造业</span>
+                <span class="stock-market">深圳</span>
+            </div>
+            <div class="stock-price">💰 5.15 | 📊 41.2亿</div>
+        </div>
+        
+        <div class="stock-item" data-stock="000552" onclick="searchStock('000552')">
+            <div class="stock-main">
+                <span class="stock-code">000552</span>
+                <span class="stock-name">甘肃能化</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">B06煤炭开采和洗选业</span>
+                <span class="stock-market">深圳</span>
+            </div>
+            <div class="stock-price">💰 2.48 | 📊 19.8亿 | PE 98.4</div>
+        </div>
+        
+        <div class="stock-item" data-stock="600630" onclick="searchStock('600630')">
+            <div class="stock-main">
+                <span class="stock-code">600630</span>
+                <span class="stock-name">龙头股份</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">C18纺织服装、服饰业</span>
+                <span class="stock-market">上海</span>
+            </div>
+            <div class="stock-price">💰 8.57 | 📊 128.6亿 | PE 92.4</div>
+        </div>
+        
+        <div class="stock-item" data-stock="600638" onclick="searchStock('600638')">
+            <div class="stock-main">
+                <span class="stock-code">600638</span>
+                <span class="stock-name">新黄浦</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">K70房地产业</span>
+                <span class="stock-market">上海</span>
+            </div>
+            <div class="stock-price">💰 5.94 | 📊 89.1亿 | PE 25.7</div>
+        </div>
+        
+        <div class="stock-item" data-stock="001231" onclick="searchStock('001231')">
+            <div class="stock-main">
+                <span class="stock-code">001231</span>
+                <span class="stock-name">农心科技</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">C26化学原料和化学制品制造业</span>
+                <span class="stock-market">深圳</span>
+            </div>
+            <div class="stock-price">💰 20.40 | 📊 163.2亿 | PE 32.3</div>
+        </div>
+        
+        <div class="stock-item" data-stock="600231" onclick="searchStock('600231')">
+            <div class="stock-main">
+                <span class="stock-code">600231</span>
+                <span class="stock-name">凌钢股份</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">C31黑色金属冶炼和压延加工业</span>
+                <span class="stock-market">上海</span>
+            </div>
+            <div class="stock-price">💰 2.08 | 📊 31.2亿</div>
+        </div>
+        
+        <div class="stock-item" data-stock="600783" onclick="searchStock('600783')">
+            <div class="stock-main">
+                <span class="stock-code">600783</span>
+                <span class="stock-name">鲁信创投</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">J67资本市场服务</span>
+                <span class="stock-market">上海</span>
+            </div>
+            <div class="stock-price">💰 13.06 | 📊 195.9亿 | PE 35.3</div>
+        </div>
+        
+        <div class="stock-item" data-stock="600917" onclick="searchStock('600917')">
+            <div class="stock-main">
+                <span class="stock-code">600917</span>
+                <span class="stock-name">重庆燃气</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">D45燃气生产和供应业</span>
+                <span class="stock-market">上海</span>
+            </div>
+            <div class="stock-price">💰 5.74 | 📊 86.1亿 | PE 26.4</div>
+        </div>
+        
+        <div class="stock-item" data-stock="000957" onclick="searchStock('000957')">
+            <div class="stock-main">
+                <span class="stock-code">000957</span>
+                <span class="stock-name">中通客车</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">C36汽车制造业</span>
+                <span class="stock-market">深圳</span>
+            </div>
+            <div class="stock-price">💰 11.42 | 📊 91.4亿 | PE 20.6</div>
+        </div>
+        
+        <div class="stock-item" data-stock="603156" onclick="searchStock('603156')">
+            <div class="stock-main">
+                <span class="stock-code">603156</span>
+                <span class="stock-name">养元饮品</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">C15酒、饮料和精制茶制造业</span>
+                <span class="stock-market">上海</span>
+            </div>
+            <div class="stock-price">💰 21.35 | 📊 320.3亿 | PE 18.7</div>
+        </div>
+        
+        <div class="stock-item" data-stock="000937" onclick="searchStock('000937')">
+            <div class="stock-main">
+                <span class="stock-code">000937</span>
+                <span class="stock-name">冀中能源</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">B06煤炭开采和洗选业</span>
+                <span class="stock-market">深圳</span>
+            </div>
+            <div class="stock-price">💰 5.96 | 📊 47.7亿 | PE 38.0</div>
+        </div>
+        
+        <div class="stock-item" data-stock="600792" onclick="searchStock('600792')">
+            <div class="stock-main">
+                <span class="stock-code">600792</span>
+                <span class="stock-name">云煤能源</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">C25石油、煤炭及其他燃料加工业</span>
+                <span class="stock-market">上海</span>
+            </div>
+            <div class="stock-price">💰 3.75 | 📊 56.2亿</div>
+        </div>
+        
+        <div class="stock-item" data-stock="600874" onclick="searchStock('600874')">
+            <div class="stock-main">
+                <span class="stock-code">600874</span>
+                <span class="stock-name">创业环保</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">D46水的生产和供应业</span>
+                <span class="stock-market">上海</span>
+            </div>
+            <div class="stock-price">💰 5.97 | 📊 89.5亿 | PE 10.9</div>
+        </div>
+        
+        <div class="stock-item" data-stock="002204" onclick="searchStock('002204')">
+            <div class="stock-main">
+                <span class="stock-code">002204</span>
+                <span class="stock-name">大连重工</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">C34通用设备制造业</span>
+                <span class="stock-market">深圳</span>
+            </div>
+            <div class="stock-price">💰 6.46 | 📊 51.7亿 | PE 23.3</div>
+        </div>
+        
+        <div class="stock-item" data-stock="600303" onclick="searchStock('600303')">
+            <div class="stock-main">
+                <span class="stock-code">600303</span>
+                <span class="stock-name">曙光股份</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">C36汽车制造业</span>
+                <span class="stock-market">上海</span>
+            </div>
+            <div class="stock-price">💰 3.84 | 📊 57.6亿</div>
+        </div>
+        
+        <div class="stock-item" data-stock="000506" onclick="searchStock('000506')">
+            <div class="stock-main">
+                <span class="stock-code">000506</span>
+                <span class="stock-name">招金黄金</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">B09有色金属矿采选业</span>
+                <span class="stock-market">深圳</span>
+            </div>
+            <div class="stock-price">💰 9.50 | 📊 76.0亿</div>
+        </div>
+        
+        <div class="stock-item" data-stock="000968" onclick="searchStock('000968')">
+            <div class="stock-main">
+                <span class="stock-code">000968</span>
+                <span class="stock-name">蓝焰控股</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">B07石油和天然气开采业</span>
+                <span class="stock-market">深圳</span>
+            </div>
+            <div class="stock-price">💰 7.08 | 📊 56.6亿 | PE 15.4</div>
+        </div>
+        
+        <div class="stock-item" data-stock="603178" onclick="searchStock('603178')">
+            <div class="stock-main">
+                <span class="stock-code">603178</span>
+                <span class="stock-name">圣龙股份</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">C36汽车制造业</span>
+                <span class="stock-market">上海</span>
+            </div>
+            <div class="stock-price">💰 19.53 | 📊 292.9亿</div>
+        </div>
+        
+        <div class="stock-item" data-stock="600604" onclick="searchStock('600604')">
+            <div class="stock-main">
+                <span class="stock-code">600604</span>
+                <span class="stock-name">市北高新</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">K70房地产业</span>
+                <span class="stock-market">上海</span>
+            </div>
+            <div class="stock-price">💰 5.91 | 📊 88.7亿 | PE 454.5</div>
+        </div>
+        
+        <div class="stock-item" data-stock="601139" onclick="searchStock('601139')">
+            <div class="stock-main">
+                <span class="stock-code">601139</span>
+                <span class="stock-name">深圳燃气</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">D45燃气生产和供应业</span>
+                <span class="stock-market">上海</span>
+            </div>
+            <div class="stock-price">💰 6.66 | 📊 99.9亿 | PE 14.1</div>
+        </div>
+        
+        <div class="stock-item" data-stock="601686" onclick="searchStock('601686')">
+            <div class="stock-main">
+                <span class="stock-code">601686</span>
+                <span class="stock-name">友发集团</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">C33金属制品业</span>
+                <span class="stock-market">上海</span>
+            </div>
+            <div class="stock-price">💰 6.02 | 📊 90.3亿 | PE 14.4</div>
+        </div>
+        
+        <div class="stock-item" data-stock="600971" onclick="searchStock('600971')">
+            <div class="stock-main">
+                <span class="stock-code">600971</span>
+                <span class="stock-name">恒源煤电</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">B06煤炭开采和洗选业</span>
+                <span class="stock-market">上海</span>
+            </div>
+            <div class="stock-price">💰 6.79 | 📊 101.8亿 | PE 44.2</div>
+        </div>
+        
+        <div class="stock-item" data-stock="002190" onclick="searchStock('002190')">
+            <div class="stock-main">
+                <span class="stock-code">002190</span>
+                <span class="stock-name">成飞集成</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">C36汽车制造业</span>
+                <span class="stock-market">深圳</span>
+            </div>
+            <div class="stock-price">💰 48.26 | 📊 386.1亿</div>
+        </div>
+        
+        <div class="stock-item" data-stock="002631" onclick="searchStock('002631')">
+            <div class="stock-main">
+                <span class="stock-code">002631</span>
+                <span class="stock-name">德尔未来</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">C20木材加工和木、竹、藤、棕、草制品业</span>
+                <span class="stock-market">深圳</span>
+            </div>
+            <div class="stock-price">💰 4.75 | 📊 38.0亿</div>
+        </div>
+        
+        <div class="stock-item" data-stock="002682" onclick="searchStock('002682')">
+            <div class="stock-main">
+                <span class="stock-code">002682</span>
+                <span class="stock-name">龙洲股份</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">G54道路运输业</span>
+                <span class="stock-market">深圳</span>
+            </div>
+            <div class="stock-price">💰 4.68 | 📊 37.4亿</div>
+        </div>
+        
+        <div class="stock-item" data-stock="002828" onclick="searchStock('002828')">
+            <div class="stock-main">
+                <span class="stock-code">002828</span>
+                <span class="stock-name">贝肯能源</span>
+            </div>
+            <div class="stock-meta">
+                <span class="stock-industry">B11开采专业及辅助性活动</span>
+                <span class="stock-market">深圳</span>
+            </div>
+            <div class="stock-price">💰 10.31 | 📊 82.5亿 | PE 266.4</div>
+        </div>
+        
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    </div>
+    
+    <div class="footer">
+        <p>🤖 Generated by GitHub Actions | Last Updated: 2026-01-06 15:47:30 UTC</p>
+    </div>
+    
+    <script>
+        function searchStock(code) {
+            // 根据股票代码判断市场
+            let market = 'SH';  // 默认上海
+            if (code.startsWith('00') || code.startsWith('30')) {
+                market = 'SZ';  // 深圳
+            } else if (code.startsWith('60') || code.startsWith('68') || code.startsWith('9')) {
+                market = 'SH';  // 上海
+            }
+            
+            window.open(`https://xueqiu.com/S/${market}${code}`, '_blank');
+        }
+    </script>
+</body>
+</html>
